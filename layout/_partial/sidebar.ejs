@@ -50,7 +50,7 @@
 	           if (value.url && value.name) { %>
 	        <a href="<%= url_for(value.url) %>" class="<%= value.name %>"
 	          target="_blank" rel="external">
-	          <span class="icon icon-<%= value.name %>"></span>
+	          <span class="icon icon-<%= value.icon || value.name %>"></span>
 	        </a>
 	      <% } }); %>
 	    <% } %>
