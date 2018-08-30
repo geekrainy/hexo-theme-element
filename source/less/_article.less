@@ -78,6 +78,12 @@
     margin-bottom: 20px;
     line-height: 1.75em;
   }
+  hr {
+    width: 30%;
+    border: none;
+    border-bottom: 4px solid @material-green;
+    margin: 30px auto;
+  }
   figure {
     width: 100%;
     font-size: 13px;
@@ -94,6 +100,15 @@
     }
     td.code {
       padding-left: 10px;
+    }
+    table {
+      margin: 0;
+      tr {
+        line-height: inherit;
+      }
+      tbody td {
+        padding: inherit;
+      }
     }
   }
   ul,
@@ -139,6 +154,28 @@
     white-space: nowrap;
     font-size: 0.8em;
     background: @background-color;
+  }
+  table {
+    margin: 1em 0;
+
+    thead {
+      border-bottom: 2px solid @material-green;
+      th {
+        padding: 0 10px;
+        text-align: left
+      }
+    }
+    tbody {
+      td {
+        padding: 0 10px;
+      }
+      tr:nth-child(even) {
+        background: @background-color;
+      }
+    }
+    tr {
+      line-height: 2;
+    }
   }
 
   @media (max-width: @on-phone) {
