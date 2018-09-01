@@ -16,6 +16,13 @@
 
   <div class="article-entry" itemprop="articleBody">
     <%- post.content %>
+    <div class="article-copyright">
+      <a href="<%= url_for(theme.copyright.url) %>" target="_blank" rel="external">
+        <span class="icon icon-creative-commons"></span>
+        <span><%= theme.copyright.text %></span>
+      </a>
+      <a href="<%= config.url %>">&copy; <%= config.title %></a>
+    </div>
   </div>
   
   <div class="article-tags">
