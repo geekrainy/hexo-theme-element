@@ -34,6 +34,27 @@
       }) %>
     <% } %>
   </div>
+
+  <% if (post.prev || post.next){ %>
+    <nav class="article-nav clearfix">
+      <% if (post.prev){ %>
+        <a href="<%- url_for(post.prev.path) %>" class="article-nav-newer">
+          <div class="article-nav-title">
+            <% if (post.prev.title){ %>
+              <%= post.prev.title %>
+            <% } else { %>
+              (no title)
+            <% } %>
+          </div>
+        </a>
+      <% } %>
+      <% if (post.next){ %>
+        <a href="<%- url_for(post.next.path) %>" class="article-nav-older">
+          <div class="article-nav-title"><%= post.next.title %></div>
+        </a>
+      <% } %>
+    </nav>
+  <% } %>
     
   <% if (post.comments && config.disqus_shortname){ %>
 	<section id="comments" class="white-box">
