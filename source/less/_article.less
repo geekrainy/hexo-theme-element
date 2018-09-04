@@ -253,21 +253,36 @@
 
 /* Article nav */
 .article-nav {
+  text-align: center;
+
   a {
+    display: block;
+    max-width: 300px;
     font-size: 14px;
     color: white;
     background: @black;
     padding: 0 10px;
     border-radius: 2px;
+    @media (max-width: @on-phone) {
+      width: 100%;
+      max-width: 100%;
+      margin: 2px 0;
+    }
   }
   a:hover {
     background: lighten(@black, 10%);
   }
   .article-nav-newer {
     float: left;
+    @media (max-width: @on-phone) {
+      float: none;
+    }
   }
   .article-nav-older {
     float: right;
+    @media (max-width: @on-phone) {
+      float: none;
+    }
   }
 }
 

@@ -6,12 +6,14 @@
     <h1 class="article-title" itemprop="name">
       <%= post.title %>
     </h1>
-    <div class="article-meta">
-      Posted on 
-      <time class="article-time" datetime="<%= date_xml(post.date) %>" itemprop="datePublished">
-        <%= date(post.date, "MMM D, YYYY") %>
-      </time>
-    </div>
+    <% if (is_post()) { %>
+      <div class="article-meta">
+        Posted on 
+        <time class="article-time" datetime="<%= date_xml(post.date) %>" itemprop="datePublished">
+          <%= date(post.date, "MMM D, YYYY") %>
+        </time>
+      </div>
+    <% } %>
   </header>
 
   <div class="article-entry" itemprop="articleBody">
