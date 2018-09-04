@@ -16,44 +16,48 @@
 
   <div class="article-entry" itemprop="articleBody">
     <%- post.content %>
-    <div class="article-copyright">
-      <a href="<%= url_for(theme.copyright.url) %>" target="_blank" rel="external">
-        <span class="icon icon-creative-commons"></span>
-        <span><%= theme.copyright.text %></span>
-      </a>
-      <a href="<%= config.url %>">&copy; <%= config.title %></a>
-    </div>
-  </div>
-  
-  <div class="article-tags">
-    <% if (post.tags && post.tags.length){ %>
-      <%- list_tags(post.tags, {
-        show_count: false,
-        style: 'none',
-        separator: ''
-      }) %>
+    <% if (is_post()) { %>
+      <div class="article-copyright">
+        <a href="<%= url_for(theme.copyright.url) %>" target="_blank" rel="external">
+          <span class="icon icon-creative-commons"></span>
+          <span><%= theme.copyright.text %></span>
+        </a>
+        <a href="<%= config.url %>">&copy; <%= config.title %></a>
+      </div>
     <% } %>
   </div>
+  
+  <% if (is_post()) { %>
+    <div class="article-tags">
+      <% if (post.tags && post.tags.length){ %>
+        <%- list_tags(post.tags, {
+          show_count: false,
+          style: 'none',
+          separator: ''
+        }) %>
+      <% } %>
+    </div>
 
-  <% if (post.prev || post.next){ %>
-    <nav class="article-nav clearfix">
-      <% if (post.prev){ %>
-        <a href="<%- url_for(post.prev.path) %>" class="article-nav-newer">
-          <div class="article-nav-title">
-            <% if (post.prev.title){ %>
-              <%= post.prev.title %>
-            <% } else { %>
-              (no title)
-            <% } %>
-          </div>
-        </a>
-      <% } %>
-      <% if (post.next){ %>
-        <a href="<%- url_for(post.next.path) %>" class="article-nav-older">
-          <div class="article-nav-title"><%= post.next.title %></div>
-        </a>
-      <% } %>
-    </nav>
+    <% if (post.prev || post.next){ %>
+      <nav class="article-nav clearfix">
+        <% if (post.prev){ %>
+          <a href="<%- url_for(post.prev.path) %>" class="article-nav-newer">
+            <div class="article-nav-title">
+              <% if (post.prev.title){ %>
+                <%= post.prev.title %>
+              <% } else { %>
+                (no title)
+              <% } %>
+            </div>
+          </a>
+        <% } %>
+        <% if (post.next){ %>
+          <a href="<%- url_for(post.next.path) %>" class="article-nav-older">
+            <div class="article-nav-title"><%= post.next.title %></div>
+          </a>
+        <% } %>
+      </nav>
+    <% } %>
   <% } %>
     
   <% if (post.comments && config.disqus_shortname){ %>
