@@ -34,6 +34,9 @@ favicon: /favicon.png
 less:
   compress: true
 
+# Music service by Meting
+music: false
+
 # use url, not username
 social:
 - name: feed
