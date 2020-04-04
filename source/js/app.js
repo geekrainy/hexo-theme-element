@@ -24,12 +24,7 @@ var customSearch;
   
   var toggleActive = function(self, e) {
     e.preventDefault();
-    if (self.hasClass("active") === true) {
-      self.removeClass("active");
-    }
-    else {
-      self.addClass("active");
-    }
+    self.toggleClass('active');
   };
 
   var scrolltoElement = function(e) {
@@ -40,14 +35,13 @@ var customSearch;
   };
 
   var openBio = function(e) {
-    var self = $(this);
-    toggleActive(self, e);
     $('body').addClass('bio-open');
+    $('.site-nav-switch').addClass('active');
   };
 
   var closeBio = function(e) {
     $('body').removeClass('bio-open');
-    toggleActive($('.site-nav-switch'), e);
+    $('.site-nav-switch').removeClass('active');
   };
   
   $(function() {
