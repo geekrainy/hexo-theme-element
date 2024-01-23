@@ -38,18 +38,9 @@ less:
 music: false
 
 # Comment
-disqus_shortname:
-valine:
-  enable: false
-  appid:
-  appkey:
-  notify: false
-  verify: false
-  placeholder: Just go go
-  avatar: retro
-  guest_info: nick,mail,link
-  pageSize: 10
-  visitor: false
+waline:
+  enable: true
+  serverURL: https://waline.rainylog.com
 
 # use url, not username
 social:
