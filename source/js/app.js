@@ -31,7 +31,7 @@ var customSearch;
     e.preventDefault();
     var self = $(this),
         correction = e.data ? e.data.correction ? e.data.correction : 0 : 0;
-    $('html, body').animate({'scrollTop': $(self.attr('href')).offset().top - correction }, 400);
+    $('html, body').animate({'scrollTop': $(decodeURI(self.attr('href'))).offset().top - correction }, 400);
   };
 
   var openBio = function(e) {
