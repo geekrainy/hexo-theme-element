@@ -2,6 +2,8 @@
   --waline-font-size: 1.6rem;
   --waline-theme-color: #78b2ca;
   --waline-active-color: #94cae1;
+  --waline-info-color: #9b9b9b;
+  --waline-color: #393a3a;
 
   .wl-card {
     padding-bottom: 0;
@@ -13,10 +15,15 @@
         height: 20px;
       }
     }
+
+    .wl-like {
+      margin-right: .75rem;
+    }
   }
 
   .wl-editor {
     padding: 1em;
+    border-radius: 2px;
     width: calc(100% - 3em);
   }
 
@@ -24,8 +31,17 @@
     border-radius: 2px;
   }
 
+  .wl-panel {
+    border-radius: 2px;
+  }
+
   .wl-header {
     background: #414141;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    margin-left: -1px;
+    margin-top: -1px;
+    margin-right: -1px;
     border-bottom: none;
 
     label {
