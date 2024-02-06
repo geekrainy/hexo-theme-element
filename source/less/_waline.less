@@ -32,6 +32,7 @@
   }
 
   .wl-panel {
+    margin: 0;
     border-radius: 2px;
   }
 
@@ -54,6 +55,12 @@
       &:focus {
         background: #4f4f4f;
       }
+    }
+  }
+
+  @media (max-width: 580px) {
+    .wl-header-item:not(:last-child) {
+      border-bottom-width: 1px;
     }
   }
 }
