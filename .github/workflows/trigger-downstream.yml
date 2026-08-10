@@ -1,0 +1,18 @@
+name: Trigger Downstream Builds
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger rainylog-hexo build
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.RAINYLOG_TOKEN }}" \
+            https://api.github.com/repos/geekrainy/rainylog-hexo/dispatches \
+            -d '{"event_type":"trigger-build","client_payload":{"ref":"master"}}'
