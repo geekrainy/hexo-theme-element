@@ -1,5 +1,17 @@
 <head>
   <meta charset="utf-8">
+  <script>
+    (function () {
+      try {
+        var key = 'rainylog-theme';
+        var saved = localStorage.getItem(key);
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        else document.documentElement.removeAttribute('data-theme');
+      } catch (e) {}
+    })();
+  </script>
   <%
   var title = page.title;
   if (is_archive()) {
@@ -16,6 +28,7 @@
   %>
   <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
   <%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
   <% if (theme.rss) { %>
     <link rel="alternative" href="<%- url_for(theme.rss) %>" title="<%= config.title %>" type="application/atom+xml">
@@ -23,31 +36,38 @@
   <% if (theme.favicon) { %>
     <link rel="icon" href="<%- url_for(theme.favicon) %>">
   <% } %>
-  <% if (theme.waline) { %>
-    <link rel="stylesheet" href="https://unpkg.com/@waline/client@3.0.0-alpha.10/dist/waline.css" />
-  <% } %>
-  
-	<!-- If needed, replace your own web font service -->
-  <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
-  
-  <% if (theme.google_analytics) { %>
-     <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.google_analytics %>"></script>
-     <script>
-       window.dataLayer = window.dataLayer || [];
-       function gtag(){dataLayer.push(arguments);}
-       gtag('js', new Date());
 
-       gtag('config', '<%= theme.google_analytics %>');
-     </script>
-   <% } %>
+  <link rel="preload" href="<%- url_for('/fonts/crimson-text-v19-latin-regular.woff2') %>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<%- url_for('/fonts/crimson-text-v19-latin-700.woff2') %>" as="font" type="font/woff2" crossorigin>
 
   <% if (theme.music) { %>
-    <link href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
-    <script src="https://unpkg.com/meting@1.2/dist/Meting.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js"></script>
+  <% } %>
+
+  <%# Waline 官方 CSS 须先于 style.css，以便主题 _waline.less 覆盖变量与组件样式 %>
+  <% if (page.comments && theme.waline && theme.waline.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
   <% } %>
 
   <%- css('icomoon/style.css') %>
   <%- css('style.css') %>
 
+  <% if (theme.google_analytics) { %>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.addEventListener('load', function() {
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=<%= theme.google_analytics %>';
+        s.async = true;
+        s.onload = function() {
+          gtag('js', new Date());
+          gtag('config', '<%= theme.google_analytics %>');
+        };
+        document.head.appendChild(s);
+      });
+    </script>
+  <% } %>
 </head>

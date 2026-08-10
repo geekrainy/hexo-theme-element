@@ -21,6 +21,8 @@
       font-size: 2em;
       line-height: 1.2;
       margin-bottom: 0px;
+      font-family: @fallback-font-family;
+      font-weight: 700;
       
       @media (max-width: @on-phone) {
         font-size: 1.5em;
@@ -242,13 +244,13 @@
     &::before {
       top: -20px;
       background-image: url(/img/quote-l.svg);
-      border-top: 1px solid lighten(@grey-color, 20%);
+      border-top: 1px solid @border-color;
     }
 
     &::after {
       bottom: -20px;
       background-image: url(/img/quote-r.svg);
-      border-bottom: 1px solid lighten(@grey-color, 20%);
+      border-bottom: 1px solid @border-color;
       background-position: 100% 8px;
     }
   }
@@ -267,7 +269,7 @@
 		
 		&:hover {
 			background: @black;
-			color: white;
+			color: @white;
 		}
 		&::before {
 			position: absolute;
@@ -291,7 +293,7 @@
     display: block;
     max-width: 300px;
     font-size: 14px;
-    color: white;
+    color: @white;
     background: @black;
     padding: 0 10px;
     border-radius: 2px;
@@ -302,7 +304,7 @@
     }
   }
   a:hover {
-    background: lighten(@black, 10%);
+    background: lighten(@black, 8%);
   }
   .article-nav-newer {
     float: left;

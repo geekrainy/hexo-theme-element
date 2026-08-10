@@ -30,22 +30,23 @@
 	}
 	span {
     &.current {
-  		background: darken(@background-color,5%);
-      border-bottom: 1px solid darken(@background-color,20%);
+  		background: darken(@background-color, 4%);
+      border-bottom: 1px solid @border-color;
   		color: @black;
   	}
     &.space {
-      background: white;
-      color: @black
+      background: transparent;
+      color: @grey-color;
     }
   }
   a {
-    background: white;
+    background: @background-color;
     color: @black;
 
     &:hover {
-      background: darken(@background-color,3%);
-      color: black;
+      background: darken(@background-color, 4%);
+      color: @black;
+      border-bottom-color: @border-color;
     }
   }
 }

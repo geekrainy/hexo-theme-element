@@ -74,7 +74,8 @@
 	    text-align: right;
       font-size: 20px;
       font-weight: 500;
-      transition: all 0.24s;
+      font-family: @fallback-font-family;
+      transition: color 0.24s, border-color 0.24s;
     }
     .post-meta {
 	    position: absolute;
@@ -85,11 +86,8 @@
       font-family: @base-font-family;
       font-size: 14px;
       font-weight: 700;
-      color: white;
+      color: @white;
       transition: all 0.24s;
     }
   }
 }
-
-
-

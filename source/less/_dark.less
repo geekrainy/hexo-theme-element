@@ -1,0 +1,445 @@
+/* Dark mode — GitHub / Linear style cool neutrals + brand accent */
+
+html[data-theme="dark"] {
+  @dm-bg: #0d1117;
+  @dm-surface: #161b22;
+  @dm-surface-2: #21262d;
+  @dm-border: #30363d;
+  @dm-text: #e6edf3;
+  @dm-text-secondary: #c9d1d9;
+  @dm-text-muted: #8b949e;
+  @dm-text-faint: #6e7681;
+  @dm-accent: #7eb6d4;
+  @dm-accent-strong: #9ecfe6;
+
+  color-scheme: dark;
+
+  body {
+    color: @dm-text-secondary;
+    background: @dm-bg;
+  }
+
+  ::selection {
+    background: fade(@dm-accent, 28%);
+  }
+
+  ::-moz-selection {
+    background: fade(@dm-accent, 28%);
+  }
+
+  a {
+    color: @dm-text;
+  }
+
+  .site-wrapper .overlay {
+    background-color: fade(@dm-bg, 72%);
+  }
+
+  .site-header {
+    .square span.b {
+      background: @dm-text;
+      color: @dm-bg;
+
+      &:hover {
+        background: #ffffff;
+      }
+    }
+
+    .square span.w {
+      color: @dm-text;
+
+      &:hover {
+        background: @dm-surface-2;
+      }
+    }
+  }
+
+  #main .page-header {
+    color: @dm-text-muted;
+  }
+
+  .post-list > li {
+    .post-link {
+      border-color: @dm-border;
+      background: @dm-surface;
+
+      &:hover {
+        border-color: @dm-accent;
+
+        .post-title {
+          color: @dm-accent-strong;
+        }
+
+        .post-meta {
+          background: @dm-accent;
+          color: @dm-bg;
+        }
+      }
+    }
+
+    .post-title {
+      color: @dm-text;
+    }
+
+    .post-meta {
+      background: @dm-border;
+      color: @dm-text;
+    }
+  }
+
+  .article {
+    .article-header h1 {
+      color: @dm-text;
+    }
+
+    .article-meta {
+      color: @dm-text-muted;
+    }
+  }
+
+  .article-entry,
+  .post-excerpt {
+    color: @dm-text-secondary;
+
+    a {
+      color: @dm-accent;
+
+      &:hover {
+        color: @dm-accent-strong;
+        background: fade(@dm-accent, 12%);
+      }
+
+      &:active {
+        background: fade(@dm-accent, 20%);
+        color: @dm-text;
+      }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: @dm-text;
+
+      &::before {
+        color: @dm-accent;
+      }
+    }
+
+    hr {
+      border-bottom-color: @dm-border;
+    }
+
+    figure {
+      background: @dm-surface;
+      border: 1px solid @dm-border;
+
+      td.gutter {
+        color: @dm-text-faint;
+        border-right-color: @dm-border;
+      }
+    }
+
+    blockquote {
+      color: @dm-text-muted;
+      border-left-color: @dm-accent;
+    }
+
+    code {
+      color: @dm-accent-strong;
+      background: @dm-surface-2;
+    }
+
+    pre code {
+      color: @dm-text-secondary;
+      background: transparent;
+    }
+
+    table {
+      thead {
+        border-bottom-color: @dm-accent;
+      }
+
+      tbody tr:nth-child(even) {
+        background: @dm-surface;
+      }
+    }
+  }
+
+  .article-copyright {
+    border-top: none;
+    color: @dm-text-muted;
+
+    a {
+      color: @dm-text-muted;
+
+      &:hover {
+        color: @dm-accent;
+      }
+    }
+  }
+
+  .article-tags a,
+  .article-tags .tag-list-link,
+  .article-tags .tag-normal-link,
+  .tag-normal-link {
+    background: @dm-surface-2;
+    color: @dm-text-secondary;
+
+    &:hover {
+      color: @dm-bg;
+      background: @dm-accent;
+    }
+  }
+
+  .article-nav {
+    border-top: none;
+
+    a {
+      color: @dm-text-secondary;
+
+      &:hover {
+        color: @dm-accent-strong;
+      }
+    }
+  }
+
+  pre code {
+    background: @dm-surface;
+    color: @dm-text-secondary;
+    border-color: @dm-border;
+  }
+
+  #footer {
+    color: @dm-text-muted;
+
+    a {
+      color: @dm-text-muted;
+
+      &:hover {
+        background: fade(@dm-accent, 14%);
+        color: @dm-accent-strong;
+      }
+    }
+  }
+
+  .search #searchinput {
+    background: @dm-surface-2;
+    color: @dm-text;
+    border: 1px solid transparent;
+
+    &:focus {
+      background: @dm-surface;
+      border-color: @dm-border;
+    }
+  }
+
+  #page-nav {
+    a,
+    span {
+      color: @dm-text-secondary;
+    }
+
+    span.current {
+      background: @dm-surface-2;
+      border-bottom-color: @dm-border;
+      color: @dm-text;
+    }
+
+    span.space {
+      background: transparent;
+      color: @dm-text-faint;
+    }
+
+    a {
+      background: transparent;
+
+      &:hover {
+        background: @dm-surface-2;
+        color: @dm-text;
+      }
+    }
+  }
+
+  #u-search {
+    .modal {
+      background: @dm-surface;
+      color: @dm-text-secondary;
+      border: 1px solid @dm-border;
+      box-shadow: 0 16px 48px fade(#000, 45%);
+
+      .modal-header {
+        background-color: @dm-surface-2;
+      }
+
+      .modal-body {
+        .modal-results {
+          li {
+            border-bottom-color: @dm-border;
+          }
+
+          .result {
+            &:hover {
+              .digest,
+              .icon {
+                color: @dm-text;
+              }
+            }
+
+            .title {
+              color: @dm-accent-strong;
+              background: transparent;
+              border-bottom-color: @dm-border;
+            }
+
+            .digest {
+              color: @dm-text-muted;
+            }
+
+            .icon {
+              color: @dm-text-faint;
+            }
+          }
+        }
+      }
+
+      .modal-footer {
+        background: @dm-surface;
+        border-top-color: @dm-border;
+
+        .nav {
+          color: @dm-text-muted;
+
+          &:hover {
+            color: @dm-text;
+          }
+        }
+      }
+    }
+  }
+
+  /* Waline — aligned to the same tokens */
+  --waline-white: @dm-surface;
+  --waline-light-grey: @dm-text-faint;
+  --waline-dark-grey: @dm-text-muted;
+  --waline-theme-color: @dm-accent;
+  --waline-active-color: @dm-accent-strong;
+  --waline-color: @dm-text-secondary;
+  --waline-bg-color: @dm-surface;
+  --waline-bg-color-light: @dm-surface-2;
+  --waline-bg-color-hover: lighten(@dm-surface-2, 4%);
+  --waline-border-color: @dm-border;
+  --waline-disable-bg-color: @dm-surface-2;
+  --waline-disable-color: @dm-text-faint;
+  --waline-bq-color: @dm-surface-2;
+  --waline-info-bg-color: @dm-surface-2;
+  --waline-info-color: @dm-text-muted;
+
+  #comments,
+  [data-waline] {
+    .wl-card {
+      border-bottom-color: @dm-border;
+    }
+
+    .wl-header {
+      background: @dm-surface-2;
+    }
+  }
+
+  #loading-bar {
+    background-color: fade(@dm-accent, 85%);
+  }
+
+  /* Sidebar glass + blobs */
+  .site-sidebar {
+    .sidebar-ambiance {
+      filter: blur(56px) saturate(130%);
+
+      .shape-1 { background: #a78bfa; opacity: 0.5; }
+      .shape-2 { background: #60a5fa; opacity: 0.45; }
+      .shape-3 { background: #f472b6; opacity: 0.42; }
+      .shape-4 { background: #818cf8; opacity: 0.4; }
+      .shape-5 { background: #c084fc; opacity: 0.38; }
+    }
+
+    .sidebar-frost {
+      background:
+        linear-gradient(165deg, rgba(13, 17, 23, 0.62) 0%, rgba(22, 27, 34, 0.52) 48%, rgba(13, 17, 23, 0.45) 100%);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .dark-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: @dm-text-secondary;
+
+      &:hover {
+        color: @dm-text;
+        background-color: @dm-accent;
+        border-color: @dm-accent;
+      }
+    }
+
+    .sidebar-switch .dark-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: @dm-text-secondary;
+
+      &.active {
+        color: @dm-bg;
+        background-color: @dm-accent;
+        border-color: @dm-accent;
+      }
+    }
+  }
+
+  .site-bio {
+    .about-me {
+      background: rgba(22, 27, 34, 0.45);
+      border-color: rgba(255, 255, 255, 0.08);
+
+      &:hover {
+        background: rgba(22, 27, 34, 0.62);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .avatar {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .info {
+        color: @dm-text-muted;
+      }
+    }
+
+    .social a {
+      background-color: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: @dm-text;
+
+      .icon {
+        color: @dm-text-muted;
+      }
+
+      &:hover {
+        border-color: transparent;
+
+        .icon {
+          color: @dm-text;
+        }
+      }
+    }
+  }
+
+  .site-toc {
+    background: rgba(22, 27, 34, 0.45);
+    border-color: rgba(255, 255, 255, 0.08);
+
+    & > ol li a {
+      color: @dm-text-secondary;
+
+      &:hover {
+        color: @dm-accent-strong;
+      }
+    }
+  }
+}

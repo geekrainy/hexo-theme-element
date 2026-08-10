@@ -1,15 +1,21 @@
+/* CSS 变量须覆盖官方 waline.css 的 :root 默认值 */
 :root {
   --waline-font-size: 1.6rem;
   --waline-theme-color: #78b2ca;
   --waline-active-color: #94cae1;
   --waline-info-color: #9b9b9b;
   --waline-color: #393a3a;
+}
 
+/* 组件样式挂在评论根节点下，提高对官方默认样式的覆盖优先级 */
+#comments,
+[data-waline] {
   .wl-card {
     padding-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
 
-    .wl-like, .wl-reply {
+    .wl-like,
+    .wl-reply {
       svg {
         width: 20px;
         height: 20px;
@@ -17,14 +23,16 @@
     }
 
     .wl-like {
-      margin-right: .75rem;
+      margin-right: 0.75rem;
     }
   }
 
   .wl-editor {
+    box-sizing: border-box;
+    width: calc(100% - 1em);
+    margin: 0.75em 0.5em;
     padding: 1em;
     border-radius: 2px;
-    width: calc(100% - 3em);
   }
 
   .wl-btn {

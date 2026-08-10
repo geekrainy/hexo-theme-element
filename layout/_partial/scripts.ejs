@@ -1,48 +1,28 @@
-<!-- Universal Search -->
+<%
+  var show_comments = !!(page.comments && theme.waline && theme.waline.enable);
+  var search_enabled = !!(theme.search && theme.search.enable);
+%>
 
-<script type="text/javascript">
-	var GOOGLE_CUSTOM_SEARCH_API_KEY = "<%- theme.search.google_api_key %>";
-	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "<%- theme.search.google_engine_id %>";
-	var ALGOLIA_API_KEY = "<%- theme.search.algolia_api_key %>";
-	var ALGOLIA_APP_ID = "<%- theme.search.algolia_app_id %>";
-	var ALGOLIA_INDEX_NAME = "<%- theme.search.algolia_index_name %>";
-  var AZURE_SERVICE_NAME = "<%- theme.search.azure_service_name %>";
-  var AZURE_INDEX_NAME = "<%- theme.search.azure_index_name %>";
-  var AZURE_QUERY_KEY = "<%- theme.search.azure_query_key %>";
-  var BAIDU_API_ID = "<%- theme.search.baidu_api_id %>";
-  var SEARCH_SERVICE = "<%- theme.search.service %>";
-</script>
-
-<script src="https://unpkg.com/jquery@2.2.4/dist/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
-
-<%- js('js/search.js') %>
-<%- js('js/app.js') %>
-
-<!-- Waline -->
-<% if (theme.waline.enable) { %>
-<script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@3.0.0-alpha.10/dist/waline.js';
-  const el = document.getElementById('comments')
-  if (el) {
-    init({
-      el: '#comments',
-      serverURL: '<%= theme.waline.serverURL %>'
-    });
-  }
+<% if (search_enabled) { %>
+<script>
+  window.__SEARCH_CONFIG__ = {
+    enable: true,
+    service: '<%- theme.search.service %>',
+    scriptUrl: '<%- url_for("js/search.js") %>',
+    azureServiceName: '<%- theme.search.azure_service_name %>',
+    azureIndexName: '<%- theme.search.azure_index_name %>',
+    azureQueryKey: '<%- theme.search.azure_query_key %>'
+  };
 </script>
 <% } %>
 
-<!-- Swiftype -->
-<!-- Please replace with your own swiftype settings -->
-<!--
-<script type="text/javascript">
-  /* Swiftype */
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+<% if (show_comments) { %>
+<script>
+  window.__WALINE_CONFIG__ = {
+    serverURL: '<%= theme.waline.serverURL %>',
+    jsUrl: 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js'
+  };
 </script>
--->
+<% } %>
+
+<%- js({src: 'js/app.js', defer: true}) %>
