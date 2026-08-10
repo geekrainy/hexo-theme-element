@@ -3,7 +3,7 @@ name: Trigger Downstream Builds
 on:
   push:
     branches:
-      - master
+      - geekrainy
 
 jobs:
   dispatch:
