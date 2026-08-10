@@ -37,10 +37,31 @@ less:
 # Music service by Meting
 music: false
 
-# Comment
+# Comment — @waline/client v3（默认关闭；请在站点 _config.yml 的 theme_config.waline 中配置）
+# https://waline.js.org/guide/get-started/client.html
+# https://waline.js.org/cookbook/import/cdn.html
+# 主题会合并读取：theme.waline（含 theme_config）与站点根级 config.waline
 waline:
-  enable: true
-  serverURL: https://waline.rainylog.com
+  enable: false
+  serverURL:
+  # CDN：国内可用 unpkg，海外推荐 jsDelivr；请固定 @v3 大版本
+  jsUrl: https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js
+  cssUrl: https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css
+  # 本主题用 html[data-theme="dark"] 切换暗色
+  # https://waline.js.org/guide/features/style.html
+  dark: 'html[data-theme="dark"]'
+  lang: zh-CN
+  login: enable
+  # reaction: false
+  # pageview: false
+  # comment: false
+  # meta: [nick, mail, link]
+  # requiredMeta: []
+  # pageSize: 10
+  # wordLimit: 0
+  # noCopyright: false
+  # locale:
+  #   placeholder: Leave a comment
 
 # use url, not username
 social:

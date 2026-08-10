@@ -46,9 +46,10 @@
     <script defer src="https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js"></script>
   <% } %>
 
-  <%# Waline 官方 CSS 须先于 style.css，以便主题 _waline.less 覆盖变量与组件样式 %>
-  <% if (page.comments && theme.waline && theme.waline.enable) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
+  <%# 官方要求单独引入 waline.css，且须先于 style.css，以便主题覆盖变量与组件样式
+      https://waline.js.org/cookbook/import/cdn.html %>
+  <% if (page.comments && waline_enabled()) { %>
+    <link rel="stylesheet" href="<%= waline_config().cssUrl || 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css' %>">
   <% } %>
 
   <%- css('icomoon/style.css') %>

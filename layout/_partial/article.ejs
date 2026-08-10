@@ -62,9 +62,8 @@
     <% } %>
   <% } %>
 
-  <% if (post.comments && theme.waline.enable){ %>
-  <section id="comments" class="white-box">
-	</section>
-	<% } %>
+  <% if (post.comments && waline_enabled()) { %>
+    <section id="comments" class="white-box"></section>
+  <% } %>
 
 </article>

@@ -109,37 +109,6 @@
     });
   }
 
-  function initWalineLazy() {
-    var el = document.getElementById('comments');
-    if (!el || !window.__WALINE_CONFIG__) return;
-
-    var loaded = false;
-    function loadWaline() {
-      if (loaded) return;
-      loaded = true;
-      import(window.__WALINE_CONFIG__.jsUrl).then(function (mod) {
-        mod.init({
-          el: '#comments',
-          serverURL: window.__WALINE_CONFIG__.serverURL
-        });
-      }).catch(function (err) {
-        console.error(err);
-      });
-    }
-
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        if (entries.some(function (entry) { return entry.isIntersecting; })) {
-          io.disconnect();
-          loadWaline();
-        }
-      }, { rootMargin: '200px 0px' });
-      io.observe(el);
-    } else {
-      loadWaline();
-    }
-  }
-
   function initThemeToggle() {
     var STORAGE_KEY = 'rainylog-theme';
     var toggle = document.querySelector('.theme-toggle');
@@ -209,7 +178,6 @@
 
     initThemeToggle();
     initSearchLazy();
-    initWalineLazy();
   });
 
   function upgradeAvatar() {

@@ -1,6 +1,33 @@
 <%
-  var show_comments = !!(page.comments && theme.waline && theme.waline.enable);
+  var show_comments = !!(page.comments && waline_enabled());
   var search_enabled = !!(theme.search && theme.search.enable);
+  var waline = show_comments ? waline_config() : {};
+  var walineOptions = null;
+  var walineJsUrl = '';
+
+  if (show_comments) {
+    walineJsUrl = waline.jsUrl || 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
+    walineOptions = {
+      el: '#comments',
+      serverURL: waline.serverURL,
+      dark: waline.dark || 'html[data-theme="dark"]',
+      lang: waline.lang || 'zh-CN',
+      login: waline.login || 'enable'
+    };
+    if (waline.reaction != null) walineOptions.reaction = waline.reaction;
+    if (waline.pageview != null) walineOptions.pageview = waline.pageview;
+    if (waline.comment != null) walineOptions.comment = waline.comment;
+    if (waline.meta) walineOptions.meta = waline.meta;
+    if (waline.requiredMeta) walineOptions.requiredMeta = waline.requiredMeta;
+    if (waline.pageSize != null) walineOptions.pageSize = waline.pageSize;
+    if (waline.wordLimit != null) walineOptions.wordLimit = waline.wordLimit;
+    if (waline.noCopyright != null) walineOptions.noCopyright = waline.noCopyright;
+    if (waline.path) walineOptions.path = waline.path;
+    if (waline.locale) walineOptions.locale = waline.locale;
+    if (waline.emoji) walineOptions.emoji = waline.emoji;
+    if (waline.recaptchaV3Key) walineOptions.recaptchaV3Key = waline.recaptchaV3Key;
+    if (waline.turnstileKey) walineOptions.turnstileKey = waline.turnstileKey;
+  }
 %>
 
 <% if (search_enabled) { %>
@@ -16,13 +43,33 @@
 </script>
 <% } %>
 
+<%- js({src: 'js/app.js', defer: true}) %>
+
 <% if (show_comments) { %>
-<script>
-  window.__WALINE_CONFIG__ = {
-    serverURL: '<%= theme.waline.serverURL %>',
-    jsUrl: 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js'
-  };
+<%# CDN 引入方式见 https://waline.js.org/cookbook/import/cdn.html
+    用 type=module + import { init }；评论区进入视口后再加载脚本 %>
+<script type="module">
+  const el = document.querySelector('#comments');
+  if (el) {
+    const options = <%- JSON.stringify(walineOptions) %>;
+    const jsUrl = <%- JSON.stringify(walineJsUrl) %>;
+
+    async function mountWaline() {
+      const { init } = await import(jsUrl);
+      init(options);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          io.disconnect();
+          mountWaline().catch(console.error);
+        }
+      }, { rootMargin: '200px 0px' });
+      io.observe(el);
+    } else {
+      mountWaline().catch(console.error);
+    }
+  }
 </script>
 <% } %>
-
-<%- js({src: 'js/app.js', defer: true}) %>
