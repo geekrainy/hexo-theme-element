@@ -1,0 +1,361 @@
+/* Douban page */
+
+.douban-page {
+  position: relative;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+
+.douban-header {
+  text-align: center;
+  padding: 36px 0 0;
+}
+
+.douban-title {
+  font-family: @fallback-font-family;
+  font-size: 2.2em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+}
+
+.douban-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: @grey-color;
+
+  a {
+    color: @accent-color;
+
+    &:hover {
+      color: darken(@accent-color, 8%);
+    }
+  }
+}
+
+.douban-stats {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px 26px;
+  margin: 18px 0 0;
+
+  li {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  .douban-stat-num {
+    font-family: @fallback-font-family;
+    font-size: 19px;
+    font-weight: 700;
+    color: @text-color;
+    letter-spacing: 0.01em;
+  }
+
+  .douban-stat-label {
+    font-size: 12px;
+    color: @grey-color;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* Tabs — 纯 CSS：radio + label */
+
+.douban-radio {
+  /* fixed 而非 absolute：点 label 时输入框获得焦点，fixed 元素永远在视口内，
+     不会把页面滚回顶部 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.douban-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0 34px;
+
+  label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 7px 18px;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: @grey-color;
+    background: @white;
+    border: 1px solid @border-color;
+    cursor: pointer;
+    transition: color 0.24s ease, background-color 0.24s ease, border-color 0.24s ease;
+
+    &:hover {
+      color: @text-color;
+      border-color: @accent-color;
+    }
+
+    .douban-tab-num {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  }
+}
+
+#douban-tab-movie:checked ~ .douban-body .douban-tabs label[for="douban-tab-movie"],
+#douban-tab-book:checked ~ .douban-body .douban-tabs label[for="douban-tab-book"],
+#douban-tab-music:checked ~ .douban-body .douban-tabs label[for="douban-tab-music"],
+#douban-tab-game:checked ~ .douban-body .douban-tabs label[for="douban-tab-game"] {
+  color: @white;
+  background: @black;
+  border-color: @black;
+
+  .douban-tab-num {
+    opacity: 0.75;
+  }
+}
+
+/* 虚拟列表：外层撑高度，内层绝对定位并按滚动位移 */
+
+.douban-list {
+  position: relative;
+  margin-bottom: 44px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &.is-out {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Grid */
+
+.douban-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 26px 20px;
+
+  @media (max-width: @on-phone) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 18px 12px;
+  }
+}
+
+.douban-grid.is-in .douban-item {
+  animation: douban-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 18ms);
+}
+
+@keyframes douban-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.douban-item {
+  display: flex;
+  flex-direction: column;
+  background: @white;
+  border: 1px solid @border-color;
+  transition: border-color 0.24s ease, transform 0.24s ease;
+
+  &:hover {
+    border-color: @accent-color;
+    transform: translateY(-2px);
+
+    .douban-name {
+      color: @accent-color;
+    }
+
+    .douban-poster img {
+      transform: scale(1.04);
+    }
+  }
+}
+
+.douban-poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: fade(@black, 5%);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+}
+
+.douban-item[data-type="music"] .douban-poster,
+.douban-item[data-type="game"] .douban-poster {
+  aspect-ratio: 1 / 1;
+}
+
+.douban-score {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px 9px;
+  background: @black;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+
+  .is-on {
+    color: #e9b53c;
+  }
+
+  .is-off {
+    color: fade(@white, 30%);
+  }
+}
+
+.douban-caption {
+  /* 固定高度是虚拟列表能按行定位的前提：同一分类下所有卡片等高
+     130px = 上下内边距 24 + 双行标题 45.5 + 副标题 22.8 + 双行短评 37.2 */
+  flex: none;
+  height: 130px;
+  padding: 11px 13px 13px;
+  overflow: hidden;
+}
+
+.douban-name {
+  font-family: @fallback-font-family;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0 0 5px;
+  color: @text-color;
+  transition: color 0.24s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.douban-meta {
+  font-size: 12px;
+  line-height: 1.4;
+  color: @grey-color;
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.douban-note {
+  font-size: 12px;
+  line-height: 1.55;
+  color: lighten(@grey-color, 6%);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.douban-footnote {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: lighten(@grey-color, 18%);
+  padding-bottom: 44px;
+}
+
+.douban-noscript {
+  text-align: center;
+  padding: 40px 0 56px;
+  font-size: 13px;
+  color: @grey-color;
+
+  a {
+    color: @accent-color;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .douban-list {
+    transition: none;
+  }
+
+  .douban-grid.is-in .douban-item {
+    animation: none;
+  }
+}
+
+/* Empty state */
+
+.douban-empty {
+  max-width: 560px;
+  margin: 90px auto 120px;
+  text-align: center;
+  color: @grey-color;
+
+  h1 {
+    font-family: @fallback-font-family;
+    font-size: 1.9em;
+    color: @text-color;
+    margin-bottom: 14px;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .douban-empty-hint {
+    font-size: 13px;
+    color: lighten(@grey-color, 12%);
+  }
+
+  code {
+    font-family: @code-font-family;
+    font-size: 12px;
+    padding: 2px 6px;
+    background: fade(@black, 6%);
+  }
+
+  a {
+    color: @accent-color;
+  }
+}
+
+/* 侧边栏豆瓣入口的图标 */
+.site-sidebar .social a.douban {
+  &:hover {
+    background-color: #2f9d3f;
+    border-color: #2f9d3f;
+    color: @white;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+}

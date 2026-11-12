@@ -71,12 +71,21 @@
 	  <div class="social clearfix">
 	    <% if (theme.social) { %>
 	      <% theme.social.forEach(function(value, key) {
-	           if (value.url && value.name) { %>
+	           if (!value.url || !value.name) return;
+	           var is_external = /^(https?:|mailto:)/i.test(value.url); %>
 	        <a href="<%= url_for(value.url) %>" class="<%= value.name %>"
-	          target="_blank" rel="external">
-	          <span class="icon icon-<%= value.icon || value.name %>"></span>
+	          <%- is_external ? 'target="_blank" rel="external noopener"' : '' %>
+	          title="<%= value.name %>">
+	          <% if (value.name === 'douban') { %>
+	            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+	              <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+	              <text x="12" y="16.5" text-anchor="middle" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" fill="currentColor">豆</text>
+	            </svg>
+	          <% } else { %>
+	            <span class="icon icon-<%= value.icon || value.name %>"></span>
+	          <% } %>
 	        </a>
-	      <% } }); %>
+	      <% }); %>
 	    <% } %>
 	  </div>
 	

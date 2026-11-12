@@ -442,4 +442,109 @@ html[data-theme="dark"] {
       }
     }
   }
+
+  /* Douban page */
+  .douban-title {
+    color: @dm-text;
+  }
+
+  .douban-desc {
+    color: @dm-text-muted;
+
+    a {
+      color: @dm-accent;
+
+      &:hover {
+        color: @dm-accent-strong;
+      }
+    }
+  }
+
+  .douban-stats {
+    .douban-stat-num {
+      color: @dm-text;
+    }
+
+    .douban-stat-label {
+      color: @dm-text-muted;
+    }
+  }
+
+  .douban-tabs label {
+    background: @dm-surface;
+    border-color: @dm-border;
+    color: @dm-text-muted;
+
+    &:hover {
+      color: @dm-text;
+      border-color: @dm-accent;
+    }
+  }
+
+  #douban-tab-movie:checked ~ .douban-body .douban-tabs label[for="douban-tab-movie"],
+  #douban-tab-book:checked ~ .douban-body .douban-tabs label[for="douban-tab-book"],
+  #douban-tab-music:checked ~ .douban-body .douban-tabs label[for="douban-tab-music"],
+  #douban-tab-game:checked ~ .douban-body .douban-tabs label[for="douban-tab-game"] {
+    background: @dm-surface-2;
+    border-color: @dm-accent;
+    color: @dm-text;
+  }
+
+  .douban-item {
+    background: @dm-surface;
+    border-color: @dm-border;
+
+    &:hover {
+      border-color: @dm-accent;
+
+      .douban-name {
+        color: @dm-accent-strong;
+      }
+    }
+  }
+
+  .douban-poster {
+    background: @dm-surface-2;
+  }
+
+  .douban-score {
+    background: @dm-surface-2;
+    box-shadow: inset 0 0 0 1px @dm-border;
+
+    .is-off {
+      color: fade(@white, 22%);
+    }
+  }
+
+  .douban-name {
+    color: @dm-text;
+  }
+
+  .douban-meta {
+    color: @dm-text-muted;
+  }
+
+  .douban-note {
+    color: @dm-text-faint;
+  }
+
+  .douban-footnote {
+    color: @dm-text-faint;
+  }
+
+  .douban-empty {
+    color: @dm-text-muted;
+
+    h1 {
+      color: @dm-text;
+    }
+
+    code {
+      background: fade(@white, 8%);
+    }
+
+    a {
+      color: @dm-accent;
+    }
+  }
 }

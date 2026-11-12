@@ -1,0 +1,294 @@
+<%
+  var db = (page && page.view) || douban_page();
+%>
+<div class="douban-page clearfix">
+<% if (db.isEmpty) { %>
+
+  <div class="douban-empty">
+    <h1>豆瓣</h1>
+    <p>还没有同步豆瓣数据。</p>
+    <p class="douban-empty-hint">
+      在本地执行 <code>pnpm run douban:sync</code> 生成 <code>data/douban.json</code> 后重新构建即可。
+    </p>
+    <p class="douban-empty-hint">
+      <a href="<%= db.profileUrl %>" target="_blank" rel="noopener noreferrer">去豆瓣看看 &rsaquo;</a>
+    </p>
+  </div>
+
+<% } else { %>
+
+  <header class="douban-header">
+    <h1 class="douban-title">豆瓣</h1>
+    <p class="douban-desc">
+      看过的电影、读过的书、听过的音乐
+      <a href="<%= db.profileUrl %>" target="_blank" rel="noopener noreferrer">@<%= db.uid %></a>
+    </p>
+    <ul class="douban-stats clearfix">
+      <% db.stats.forEach(function (stat) { %>
+        <li>
+          <span class="douban-stat-num"><%= stat.count %></span>
+          <span class="douban-stat-label"><%= stat.unit %><%= stat.label %></span>
+        </li>
+      <% }); %>
+    </ul>
+  </header>
+
+  <% db.groups.forEach(function (group, i) { %>
+    <input type="radio" class="douban-radio" name="douban-tab" value="<%= group.type %>" id="douban-tab-<%= group.type %>"<%= i === 0 ? ' checked' : '' %>>
+  <% }); %>
+
+  <div class="douban-body">
+    <nav class="douban-tabs" aria-label="豆瓣分类">
+      <% db.groups.forEach(function (group) { %>
+        <label for="douban-tab-<%= group.type %>">
+          <span class="douban-tab-text"><%= group.label %></span>
+          <span class="douban-tab-num"><%= group.count %></span>
+        </label>
+      <% }); %>
+    </nav>
+
+    <div class="douban-list" id="douban-list">
+      <div class="douban-grid" id="douban-grid"></div>
+    </div>
+
+    <noscript>
+      <p class="douban-noscript">
+        共 <%= db.total %> 条记录，需要开启 JavaScript 才能浏览。
+        <a href="<%= db.profileUrl %>" target="_blank" rel="noopener noreferrer">去豆瓣看 &rsaquo;</a>
+      </p>
+    </noscript>
+  </div>
+
+  <p class="douban-footnote">
+    共 <%= db.total %> 条记录<% if (db.updated) { %> · 更新于 <%= db.updated %><% } %> · 数据来自豆瓣
+  </p>
+
+  <script type="application/json" id="douban-data"><%- db.payload %></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var dataEl = document.getElementById('douban-data');
+    var list = document.getElementById('douban-list');
+    var grid = document.getElementById('douban-grid');
+    if (!dataEl || !list || !grid) return;
+
+    var DATA;
+    try { DATA = JSON.parse(dataEl.textContent || dataEl.innerHTML); } catch (e) { return; }
+    if (!DATA || !DATA.groups || !DATA.groups.length) return;
+
+    var BY_TYPE = {};
+    DATA.groups.forEach(function (g) { BY_TYPE[g.type] = g.items; });
+
+    var OVERSCAN = 2;          /* 视窗上下各多渲染两行，滚动时不留白 */
+    var STAGGER_MAX = 12;      /* 入场错峰最多 12 个，再往后同时出现 */
+
+    var state = { type: '', items: [], cols: 1, pitch: 0, cardH: 0, key: '' };
+    var animTimer = 0;
+
+    function repeat(ch, n) {
+      var s = '';
+      for (var i = 0; i < n; i++) s += ch;
+      return s;
+    }
+
+    function scrollTop() {
+      return window.pageYOffset || document.documentElement.scrollTop || 0;
+    }
+
+    function makeCard(item, type, index) {
+      var a = document.createElement('a');
+      a.className = 'douban-item';
+      a.setAttribute('data-type', type);
+      a.href = item[1] || '#';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.title = item[0];
+      a.style.setProperty('--i', Math.min(index, STAGGER_MAX));
+
+      var poster = document.createElement('div');
+      poster.className = 'douban-poster';
+
+      if (item[2]) {
+        var img = document.createElement('img');
+        img.src = item[2];
+        img.alt = item[0];
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        poster.appendChild(img);
+      }
+
+      var rating = Number(item[3]) || 0;
+      if (rating > 0) {
+        var score = document.createElement('span');
+        score.className = 'douban-score';
+        score.title = '我的评分 ' + rating + ' 星';
+        var on = document.createElement('span');
+        on.className = 'is-on';
+        on.textContent = repeat('★', rating);
+        var off = document.createElement('span');
+        off.className = 'is-off';
+        off.textContent = repeat('☆', 5 - rating);
+        score.appendChild(on);
+        score.appendChild(off);
+        poster.appendChild(score);
+      }
+
+      a.appendChild(poster);
+
+      var caption = document.createElement('div');
+      caption.className = 'douban-caption';
+
+      var name = document.createElement('h3');
+      name.className = 'douban-name';
+      name.textContent = item[0];
+      caption.appendChild(name);
+
+      if (item[4]) {
+        var meta = document.createElement('p');
+        meta.className = 'douban-meta';
+        meta.title = item[4];
+        meta.textContent = item[4];
+        caption.appendChild(meta);
+      }
+
+      if (item[5]) {
+        var note = document.createElement('p');
+        note.className = 'douban-note';
+        note.textContent = item[5];
+        caption.appendChild(note);
+      }
+
+      a.appendChild(caption);
+      return a;
+    }
+
+    /* 量一次列数与行高：卡片高度在 CSS 里是统一的，所以整个列表可以用绝对定位窗口化 */
+    function measure() {
+      var first = state.items[0];
+      if (!first) return false;
+
+      grid.style.transform = 'none';
+      grid.textContent = '';
+      grid.appendChild(makeCard(first, state.type, 0));
+
+      var card = grid.firstElementChild;
+      var styles = window.getComputedStyle(grid);
+      var gap = parseFloat(styles.rowGap) || 0;
+      var cols = (styles.gridTemplateColumns || '').split(' ').filter(Boolean).length;
+
+      state.cardH = card.getBoundingClientRect().height;
+      state.cols = Math.max(1, cols);
+      state.pitch = state.cardH + gap;
+
+      grid.textContent = '';
+      return state.pitch > 0;
+    }
+
+    function paint(from, to, startRow) {
+      var frag = document.createDocumentFragment();
+      for (var i = from; i < to; i++) {
+        frag.appendChild(makeCard(state.items[i], state.type, i - from));
+      }
+      grid.textContent = '';
+      grid.appendChild(frag);
+      grid.style.transform = 'translate3d(0,' + startRow * state.pitch + 'px,0)';
+    }
+
+    function render(force) {
+      var total = state.items.length;
+      if (!total || !state.pitch) return;
+
+      var cols = state.cols;
+      var pitch = state.pitch;
+      var totalRows = Math.ceil(total / cols);
+      var listTop = list.getBoundingClientRect().top + scrollTop();
+      var viewTop = scrollTop() - listTop;
+      var viewH = window.innerHeight || document.documentElement.clientHeight;
+
+      var startRow = Math.floor(viewTop / pitch) - OVERSCAN;
+      var endRow = Math.ceil((viewTop + viewH) / pitch) + OVERSCAN;
+      if (startRow < 0) startRow = 0;
+      if (endRow > totalRows) endRow = totalRows;
+      if (endRow <= startRow) endRow = Math.min(totalRows, startRow + 1);
+
+      list.style.height = (totalRows * pitch - (pitch - state.cardH)) + 'px';
+
+      var from = startRow * cols;
+      var to = Math.min(total, endRow * cols);
+      var key = state.type + '|' + cols + '|' + from + '|' + to;
+      if (!force && key === state.key) return;
+      state.key = key;
+
+      paint(from, to, startRow);
+    }
+
+    /* 切换分类时的入场：逐张上浮淡入，错峰 18ms */
+    function enter() {
+      grid.classList.remove('is-in');
+      void grid.offsetWidth;
+      grid.classList.add('is-in');
+      window.clearTimeout(animTimer);
+      animTimer = window.setTimeout(function () {
+        grid.classList.remove('is-in');
+      }, 1000);
+    }
+
+    function activate(type, animate) {
+      if (!type || type === state.type || !BY_TYPE[type]) return;
+
+      state.type = type;
+      state.items = BY_TYPE[type];
+      state.key = '';
+
+      if (!animate) {
+        measure();
+        render(true);
+        return;
+      }
+
+      list.classList.add('is-out');
+      window.setTimeout(function () {
+        measure();
+        render(true);
+        enter();
+        list.classList.remove('is-out');
+      }, 170);
+    }
+
+    /* 滚动节流：一帧最多算一次 */
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        render(false);
+      });
+    }, { passive: true });
+
+    var resizeTimer = 0;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        if (!state.items.length) return;
+        state.key = '';
+        measure();
+        render(true);
+      }, 160);
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.douban-radio'), function (radio) {
+      radio.addEventListener('change', function () {
+        if (this.checked) activate(this.value, true);
+      });
+    });
+
+    var checked = document.querySelector('.douban-radio:checked');
+    activate(checked ? checked.value : DATA.groups[0].type, false);
+    enter();
+  })();
+  </script>
+
+<% } %>
+</div>
