@@ -52,8 +52,12 @@
     <link rel="stylesheet" href="<%= waline_config().cssUrl || 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css' %>">
   <% } %>
 
-  <%- css('icomoon/style.css') %>
-  <%- css('style.css') %>
+  <%# 静态资源带版本号，避免 7 天强缓存导致部署后样式不更新
+      站点注册了 asset_version 助手；主题单独使用时回退到无版本号 %>
+  <% var _ver = (typeof asset_version === 'function') ? asset_version() : ''; %>
+  <% function asset(path) { var u = url_for(path); return _ver ? u + (u.indexOf('?') === -1 ? '?' : '&') + 'v=' + _ver : u; } %>
+  <link rel="stylesheet" href="<%- asset('/icomoon/style.css') %>">
+  <link rel="stylesheet" href="<%- asset('/style.css') %>">
 
   <% if (theme.google_analytics) { %>
     <script>

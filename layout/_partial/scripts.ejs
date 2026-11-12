@@ -30,12 +30,17 @@
   }
 %>
 
+<%
+  var _ver = (typeof asset_version === 'function') ? asset_version() : '';
+  function asset(path) { var u = url_for(path); return _ver ? u + (u.indexOf('?') === -1 ? '?' : '&') + 'v=' + _ver : u; }
+%>
+
 <% if (search_enabled) { %>
 <script>
   window.__SEARCH_CONFIG__ = {
     enable: true,
     service: '<%- theme.search.service %>',
-    scriptUrl: '<%- url_for("js/search.js") %>',
+    scriptUrl: '<%- asset("js/search.js") %>',
     azureServiceName: '<%- theme.search.azure_service_name %>',
     azureIndexName: '<%- theme.search.azure_index_name %>',
     azureQueryKey: '<%- theme.search.azure_query_key %>'
@@ -43,7 +48,7 @@
 </script>
 <% } %>
 
-<%- js({src: 'js/app.js', defer: true}) %>
+<script src="<%- asset('js/app.js') %>" defer></script>
 
 <% if (show_comments) { %>
 <%# CDN 引入方式见 https://waline.js.org/cookbook/import/cdn.html
