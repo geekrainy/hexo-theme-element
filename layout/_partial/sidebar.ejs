@@ -77,9 +77,18 @@
 	          <%- is_external ? 'target="_blank" rel="external noopener"' : '' %>
 	          title="<%= value.name %>">
 	          <% if (value.name === 'douban') { %>
-	            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-	              <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
-	              <text x="12" y="16.5" text-anchor="middle" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" fill="currentColor">豆</text>
+	            <%# 实心圆角方块 + 镂空「豆」，镂空部分透出底色，悬停时随图标反白 %>
+	            <svg class="douban-mark" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+	              <defs>
+	                <mask id="douban-mark-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+	                  <rect width="24" height="24" fill="#fff"/>
+	                  <text x="12" y="18.5" text-anchor="middle" font-size="16.6" font-weight="600"
+	                    font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif"
+	                    fill="#000">豆</text>
+	                </mask>
+	              </defs>
+	              <rect x="1.2" y="1.2" width="21.6" height="21.6" rx="5.2"
+	                fill="currentColor" mask="url(#douban-mark-mask)"/>
 	            </svg>
 	          <% } else { %>
 	            <span class="icon icon-<%= value.icon || value.name %>"></span>

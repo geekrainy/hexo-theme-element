@@ -327,6 +327,28 @@
   				background-color: @behance-color;
   			}
   		}
+
+			/* 豆瓣：实心图标随图标色，悬停换成豆瓣绿底反白 */
+			&.douban {
+				.douban-mark {
+					display: inline-block;
+					position: relative;
+					top: -1px; /* 与相邻字体图标的光学中心对齐 */
+					vertical-align: middle;
+					color: @grey-color;
+					transition: color 0.24s;
+				}
+
+				&:hover {
+					background: @douban-color;
+					border-color: transparent;
+
+					.douban-mark {
+						color: @white;
+					}
+				}
+			}
+
   		&:hover {
   			background: @brand-color;
         border-color: transparent;
